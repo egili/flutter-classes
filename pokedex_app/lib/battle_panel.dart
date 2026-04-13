@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'pokemon.dart';
 import 'stat_bar.dart';
+import 'pokemon.dart';
 
 class BattlePanel extends StatefulWidget {
-  const BattlePanel({super.key});
+  final Pokemon pokemon;
+
+  const BattlePanel({super.key, required this.pokemon});
 
   @override
   State<BattlePanel> createState() => _BattlePanelState();
@@ -11,7 +15,13 @@ class BattlePanel extends StatefulWidget {
 class _BattlePanelState extends State<BattlePanel> {
   int hp = 100;
   int xp = 0;
-  int level = 42;
+  late int level;
+
+  @override
+  void initState() {
+    super.initState();
+    level = widget.pokemon.level;
+  }
 
   Color get hpColor {
     if (hp > 60) return Colors.green;
@@ -20,7 +30,7 @@ class _BattlePanelState extends State<BattlePanel> {
   }
 
   String get statusMessage {
-    if (hp == 0) return 'Gyarados desmaiou!';
+    if (hp == 0) return '${widget.pokemon.name} desmaiou!';
     if (hp <= 30) return 'HP crítico!';
     return '';
   }
@@ -46,57 +56,60 @@ class _BattlePanelState extends State<BattlePanel> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 2,
       child: Padding(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Column(
           children: [
             Text(
               'Nível $level',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-            SizedBox(height: 12),
+            const SizedBox(height: 12),
 
             StatBar(label: 'HP', value: hp, maxValue: 100, color: hpColor),
             StatBar(label: 'XP', value: xp, maxValue: 100, color: Colors.blue),
 
             if (statusMessage.isNotEmpty) ...[
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Text(
                 statusMessage,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.red,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ],
 
-            SizedBox(height: 12),
+            const SizedBox(height: 12),
 
             Row(
               children: [
                 Expanded(
                   child: ElevatedButton(
                     onPressed: hp > 0 ? _atacar : null,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
-                      foregroundColor: Colors.white,
-                    ),
-                    child: Text('Atacar'),
+                    child: const Text('Atacar'),
                   ),
                 ),
-                SizedBox(width: 12),
+                const SizedBox(width: 12),
                 Expanded(
                   child: ElevatedButton(
                     onPressed: hp < 100 ? _usarPocao : null,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
-                      foregroundColor: Colors.white,
-                    ),
-                    child: Text('Usar Poção'),
+                    child: const Text('Usar Poção'),
                   ),
                 ),
               ],
+            ),
+
+            const SizedBox(height: 12),
+
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context, level);
+              },
+              child: const Text('Encerrar Batalha'),
             ),
           ],
         ),

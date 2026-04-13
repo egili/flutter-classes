@@ -1,44 +1,45 @@
 import 'package:flutter/material.dart';
+import 'pokemon.dart';
+import 'pokemon.dart';
 
 class PokemonCard extends StatelessWidget {
-  const PokemonCard({super.key});
+  final Pokemon pokemon;
+
+  const PokemonCard({super.key, required this.pokemon});
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 2,
       child: Padding(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Row(
           children: [
             CircleAvatar(
               radius: 36,
-              backgroundColor: Colors.blue.shade100,
-              backgroundImage: NetworkImage(
-                'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/130.png',
-              ),
+              backgroundImage: NetworkImage(pokemon.spriteUrl),
             ),
-            SizedBox(width: 16),
+            const SizedBox(width: 16),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Gyarados',
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                  pokemon.name,
+                  style: const TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-                SizedBox(height: 4),
+                const SizedBox(height: 4),
                 Row(
-                  children: [
-                    Image.network(
-                      'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/types/generation-iii/firered-leafgreen/11.png',
-                      height: 12,
-                    ),
-                    SizedBox(width: 4),
-                    Image.network(
-                      'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/types/generation-iii/firered-leafgreen/3.png',
-                      height: 12,
-                    ),
-                  ],
+                  children: pokemon.typeIds.map((typeId) {
+                    return Padding(
+                      padding: const EdgeInsets.only(right: 4),
+                      child: Image.network(
+                        '${pokemon.typeSpriteUrl}$typeId.png',
+                        height: 12,
+                      ),
+                    );
+                  }).toList(),
                 ),
               ],
             ),

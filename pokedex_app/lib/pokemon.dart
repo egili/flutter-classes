@@ -3,7 +3,8 @@ class Pokemon {
   final int spriteId;
   final List<int> typeIds;
   int level;
-  final List<String> moves;
+
+  final List<Map<String, dynamic>> moves;
 
   Pokemon({
     required this.name,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class MoveList extends StatelessWidget {
-  final List<String> moves;
+  final List<Map<String, dynamic>> moves;
 
   const MoveList({super.key, required this.moves});
 
@@ -20,8 +20,8 @@ class MoveList extends StatelessWidget {
           ),
           ...moves.map(
             (move) => ListTile(
-              leading: const Icon(Icons.flash_on),
-              title: Text(move),
+              leading: Icon(move['icon']),
+              title: Text(move['name']),
             ),
           ),
         ],

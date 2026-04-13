@@ -15,30 +15,49 @@ class _HomeScreenState extends State<HomeScreen> {
         Pokemon(
             name: 'Articuno',
             spriteId: 144,
-            typeIds: [15, 3], 
+            typeIds: [15, 3],
             level: 50,
-            moves: ['Ice Beam', 'Blizzard', 'Fly', 'Roost'],
+            moves: [
+                {'name': 'Raio de Gelo', 'icon': Icons.ac_unit},
+                {'name': 'Nevasca', 'icon': Icons.cloud},
+                {'name': 'Voo', 'icon': Icons.flight},
+                {'name': 'Refletir', 'icon': Icons.home},
+            ],
         ),
         Pokemon(
             name: 'Zapdos',
             spriteId: 145,
-            typeIds: [13, 3], 
+            typeIds: [13, 3],
             level: 50,
-            moves: ['Thunderbolt', 'Drill Peck', 'Thunder', 'Agility'],
+            moves: [
+                {'name': 'Choque do Trovão', 'icon': Icons.flash_on},
+                {'name': 'Descarga', 'icon': Icons.bolt},
+                {'name': 'Bico Broca', 'icon': Icons.gps_fixed},
+                {'name': 'Chute Trovão', 'icon': Icons.speed},
+            ],
         ),
         Pokemon(
             name: 'Moltres',
             spriteId: 146,
-            typeIds: [10, 3], 
+            typeIds: [10, 3],
             level: 50,
-            moves: ['Flamethrower', 'Fire Blast', 'Fly', 'Sunny Day'],
+            moves: [
+                {'name': 'Onda de Calor', 'icon': Icons.local_fire_department},
+                {'name': 'Giro de Fogo', 'icon': Icons.whatshot},
+                {'name': 'Corte de Ar', 'icon': Icons.flight},
+                {'name': 'Brasa', 'icon': Icons.wb_sunny},
+            ],
         ),
         Pokemon(
             name: 'Gyarados',
             spriteId: 130,
             typeIds: [11, 3],
             level: 45,
-            moves: ['Hydro Pump', 'Crunch', 'Dragon Dance', 'Hurricane'],
+            moves: [
+                {'name': 'Cachoeira', 'icon': Icons.water},
+                {'name': 'Dança do Dragão', 'icon': Icons.warning},
+                {'name': 'Presa de Gelo', 'icon': Icons.cyclone},
+            ],
         ),
     ];
 

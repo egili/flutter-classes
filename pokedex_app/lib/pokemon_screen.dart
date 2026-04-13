@@ -23,15 +23,7 @@ class PokemonScreen extends StatelessWidget {
             BattlePanel(pokemon: pokemon),
             const SizedBox(height: 16),
             MoveList(moves: pokemon.moves),
-
             const SizedBox(height: 16),
-
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text('Encerrar Batalha'),
-            ),
           ],
         ),
       ),

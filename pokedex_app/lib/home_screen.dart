@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart'; // Importação necessária
 import 'pokemon.dart';
 import 'pokemon_screen.dart';
-import 'pokemon.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -11,89 +11,68 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final pokemons = [
-        Pokemon(
-            name: 'Articuno',
-            spriteId: 144,
-            typeIds: [15, 3],
-            level: 50,
-            moves: [
-                {'name': 'Raio de Gelo', 'icon': Icons.ac_unit},
-                {'name': 'Nevasca', 'icon': Icons.cloud},
-                {'name': 'Voo', 'icon': Icons.flight},
-                {'name': 'Refletir', 'icon': Icons.home},
-            ],
-        ),
-        Pokemon(
-            name: 'Zapdos',
-            spriteId: 145,
-            typeIds: [13, 3],
-            level: 50,
-            moves: [
-                {'name': 'Choque do Trovão', 'icon': Icons.flash_on},
-                {'name': 'Descarga', 'icon': Icons.bolt},
-                {'name': 'Bico Broca', 'icon': Icons.gps_fixed},
-                {'name': 'Chute Trovão', 'icon': Icons.speed},
-            ],
-        ),
-        Pokemon(
-            name: 'Moltres',
-            spriteId: 146,
-            typeIds: [10, 3],
-            level: 50,
-            moves: [
-                {'name': 'Onda de Calor', 'icon': Icons.local_fire_department},
-                {'name': 'Giro de Fogo', 'icon': Icons.whatshot},
-                {'name': 'Corte de Ar', 'icon': Icons.flight},
-                {'name': 'Brasa', 'icon': Icons.wb_sunny},
-            ],
-        ),
-        Pokemon(
-            name: 'Gyarados',
-            spriteId: 130,
-            typeIds: [11, 3],
-            level: 45,
-            moves: [
-                {'name': 'Cachoeira', 'icon': Icons.water},
-                {'name': 'Dança do Dragão', 'icon': Icons.warning},
-                {'name': 'Presa de Gelo', 'icon': Icons.cyclone},
-            ],
-        ),
-    ];
+  // Referência da coleção no Firestore
+  final collection = FirebaseFirestore.instance.collection('pokemons');
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Pokédex')),
-      body: ListView.builder(
-        padding: const EdgeInsets.all(12),
-        itemCount: pokemons.length,
-        itemBuilder: (context, index) {
-          final pokemon = pokemons[index];
+      // Parte 1: Substituindo a lista fixa pelo StreamBuilder
+      body: StreamBuilder<QuerySnapshot>(
+        stream: collection.snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) return const Center(child: Text('Erro ao carregar'));
+          if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
 
-          return Card(
-            child: ListTile(
-              leading: CircleAvatar(
-                backgroundImage: NetworkImage(pokemon.spriteUrl),
-              ),
-              title: Text(pokemon.name),
-              subtitle: Text('Nível ${pokemon.level}'),
+          final docs = snapshot.data!.docs;
 
-              onTap: () async {
-                final novoNivel = await Navigator.push<int>(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => PokemonScreen(pokemon: pokemon),
+          return ListView.builder(
+            padding: const EdgeInsets.all(12),
+            itemCount: docs.length,
+            itemBuilder: (context, index) {
+              final data = docs[index].data() as Map<String, dynamic>;
+              final docId = docs[index].id; // ID único do documento no Firebase
+
+              // Criamos o objeto Pokemon com os dados vindos do banco
+              final pokemon = Pokemon(
+                name: data['name'] ?? 'Sem nome',
+                spriteId: data['spriteId'] ?? 1,
+                // Ajuste conforme sua classe Pokemon lida com tipos (array de strings)
+                typeIds: List<int>.from(data['typeIds'] ?? []), 
+                level: data['level'] ?? 1,
+                moves: [], // Pode deixar vazio se não estiver no banco
+              );
+
+              return Card(
+                child: ListTile(
+                  leading: CircleAvatar(
+                    backgroundImage: NetworkImage(pokemon.spriteUrl),
                   ),
-                );
-
-                if (novoNivel != null) {
-                  setState(() {
-                    pokemon.level = novoNivel;
-                  });
-                }
-              },
-            ),
+                  title: Text(pokemon.name),
+                  subtitle: Text('Nível ${pokemon.level}'),
+                  // Parte 3: Botão de Deletar
+                  trailing: IconButton(
+                    icon: const Icon(Icons.delete, color: Colors.red),
+                    onPressed: () async {
+                      await collection.doc(docId).delete();
+                    },
+                  ),
+                  onTap: () {
+                    // Parte 2: Navegando e passando o docId
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => PokemonScreen(
+                          pokemon: pokemon,
+                          docId: docId, // Precisamos adicionar isso na PokemonScreen
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              );
+            },
           );
         },
       ),

@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart'; // Importação necessár
 import 'pokemon.dart';
 import 'pokemon_screen.dart';
 
+//pra conseguir salvar
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 

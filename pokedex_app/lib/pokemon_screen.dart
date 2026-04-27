@@ -1,14 +1,9 @@
-import 'package:flutter/material.dart';
-import 'pokemon.dart';
-import 'pokemon_card.dart';
-import 'battle_panel.dart';
-import 'move_list.dart';
-import 'pokemon.dart';
-
 class PokemonScreen extends StatelessWidget {
   final Pokemon pokemon;
+  final String docId; // ADICIONE AQUI
 
-  const PokemonScreen({super.key, required this.pokemon});
+  // ATUALIZE O CONSTRUTOR
+  const PokemonScreen({super.key, required this.pokemon, required this.docId});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +15,8 @@ class PokemonScreen extends StatelessWidget {
           children: [
             PokemonCard(pokemon: pokemon),
             const SizedBox(height: 16),
-            BattlePanel(pokemon: pokemon),
+            // REPASSE O docId PARA O BATTLE PANEL
+            BattlePanel(pokemon: pokemon, docId: docId), 
             const SizedBox(height: 16),
             MoveList(moves: pokemon.moves),
             const SizedBox(height: 16),

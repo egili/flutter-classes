@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart'; // Importação do Firebase
 import 'pokemon.dart';
 import 'stat_bar.dart';
-import 'pokemon.dart';
 
 class BattlePanel extends StatefulWidget {
   final Pokemon pokemon;
+  final String docId; // Recebe o ID do documento do Firebase
 
-  const BattlePanel({super.key, required this.pokemon});
+  const BattlePanel({super.key, required this.pokemon, required this.docId});
 
   @override
   State<BattlePanel> createState() => _BattlePanelState();
@@ -105,11 +106,26 @@ class _BattlePanelState extends State<BattlePanel> {
 
             const SizedBox(height: 12),
 
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context, level);
-              },
-              child: const Text('Encerrar Batalha'),
+            // BOTÃO ATUALIZADO PARA A PARTE 2
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.blueGrey),
+                onPressed: () async {
+                  // Salva o nível alcançado no Firestore
+                  await FirebaseFirestore.instance
+                      .collection('pokemons')
+                      .doc(widget.docId)
+                      .update({'level': level});
+
+                  if (!context.mounted) return;
+                  Navigator.pop(context); // A Home atualizará sozinha via StreamBuilder
+                },
+                child: const Text(
+                  'Encerrar Batalha',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
             ),
           ],
         ),

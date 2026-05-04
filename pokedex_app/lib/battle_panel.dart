@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart'; // Importação do Firebase
+import 'package:cloud_firestore/cloud_firestore.dart'; 
 import 'pokemon.dart';
 import 'stat_bar.dart';
 
@@ -106,7 +106,6 @@ class _BattlePanelState extends State<BattlePanel> {
 
             const SizedBox(height: 12),
 
-            // BOTÃO ATUALIZADO PARA A PARTE 2
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(

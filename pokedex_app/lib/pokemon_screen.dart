@@ -6,9 +6,8 @@ import 'move_list.dart';
 
 class PokemonScreen extends StatelessWidget {
   final Pokemon pokemon;
-  final String docId; // NOVO: Campo para armazenar o ID do documento
+  final String docId; 
 
-  // ATUALIZADO: Agora o docId é obrigatório no construtor
   const PokemonScreen({
     super.key, 
     required this.pokemon, 
@@ -25,7 +24,6 @@ class PokemonScreen extends StatelessWidget {
           children: [
             PokemonCard(pokemon: pokemon),
             const SizedBox(height: 16),
-            // ATUALIZADO: Passando o docId para o BattlePanel
             BattlePanel(pokemon: pokemon, docId: docId), 
             const SizedBox(height: 16),
             MoveList(moves: pokemon.moves),

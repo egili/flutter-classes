@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart'; // Importação necessária
+import 'package:cloud_firestore/cloud_firestore.dart'; 
 import 'pokemon.dart';
 import 'pokemon_screen.dart';
 
-//pra conseguir salvar
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -12,14 +11,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  // Referência da coleção no Firestore
   final collection = FirebaseFirestore.instance.collection('pokemons');
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Pokédex')),
-      // Parte 1: Substituindo a lista fixa pelo StreamBuilder
       body: StreamBuilder<QuerySnapshot>(
         stream: collection.snapshots(),
         builder: (context, snapshot) {
@@ -33,16 +30,14 @@ class _HomeScreenState extends State<HomeScreen> {
             itemCount: docs.length,
             itemBuilder: (context, index) {
               final data = docs[index].data() as Map<String, dynamic>;
-              final docId = docs[index].id; // ID único do documento no Firebase
+              final docId = docs[index].id;
 
-              // Criamos o objeto Pokemon com os dados vindos do banco
               final pokemon = Pokemon(
                 name: data['name'] ?? 'Sem nome',
                 spriteId: data['spriteId'] ?? 1,
-                // Ajuste conforme sua classe Pokemon lida com tipos (array de strings)
                 typeIds: List<int>.from(data['typeIds'] ?? []), 
                 level: data['level'] ?? 1,
-                moves: [], // Pode deixar vazio se não estiver no banco
+                moves: [],
               );
 
               return Card(
@@ -52,7 +47,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   title: Text(pokemon.name),
                   subtitle: Text('Nível ${pokemon.level}'),
-                  // Parte 3: Botão de Deletar
                   trailing: IconButton(
                     icon: const Icon(Icons.delete, color: Colors.red),
                     onPressed: () async {
@@ -60,13 +54,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                   ),
                   onTap: () {
-                    // Parte 2: Navegando e passando o docId
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (_) => PokemonScreen(
                           pokemon: pokemon,
-                          docId: docId, // Precisamos adicionar isso na PokemonScreen
+                          docId: docId, 
                         ),
                       ),
                     );

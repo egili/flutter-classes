@@ -17,7 +17,7 @@ class PokemonScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(pokemon.name)),
+      app_Bar: AppBar(title: Text(pokemon.name.toUpperCase())),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -27,7 +27,6 @@ class PokemonScreen extends StatelessWidget {
             BattlePanel(pokemon: pokemon, docId: docId), 
             const SizedBox(height: 16),
             MoveList(moves: pokemon.moves),
-            const SizedBox(height: 16),
           ],
         ),
       ),

@@ -3,7 +3,6 @@ import 'pokemon.dart';
 
 class PokemonCard extends StatelessWidget {
   final Pokemon pokemon;
-
   const PokemonCard({super.key, required this.pokemon});
 
   @override
@@ -16,31 +15,24 @@ class PokemonCard extends StatelessWidget {
             CircleAvatar(
               radius: 36,
               backgroundImage: NetworkImage(pokemon.spriteUrl),
+              backgroundColor: Colors.grey.shade200,
             ),
             const SizedBox(width: 16),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  pokemon.name,
-                  style: const TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(pokemon.name.toUpperCase(), style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 4),
+                  Wrap(
+                    spacing: 4,
+                    children: pokemon.types.map((t) => Chip(
+                      label: Text(t, style: const TextStyle(fontSize: 10)),
+                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    )).toList(),
                   ),
-                ),
-                const SizedBox(height: 4),
-                Row(
-                  children: pokemon.typeIds.map((typeId) {
-                    return Padding(
-                      padding: const EdgeInsets.only(right: 4),
-                      child: Image.network(
-                        '${pokemon.typeSpriteUrl}$typeId.png',
-                        height: 12,
-                      ),
-                    );
-                  }).toList(),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),

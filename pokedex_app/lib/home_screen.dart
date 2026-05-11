@@ -63,8 +63,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
               final pokemon = Pokemon(
                 name: data['name'] ?? 'Sem nome',
-                spriteId: data['spriteId'] ?? 1,
-                typeIds: List<int>.from(data['typeIds'] ?? []),
+                spriteUrl: data['spriteUrl'] ?? '', 
+                types: List<String>.from(data['types'] ?? []),
                 level: data['level'] ?? 1,
                 moves: [],
               );
@@ -78,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     backgroundColor: Colors.grey.shade200,
                   ),
                   title: Text(
-                    pokemon.name,
+                    pokemon.name.toUpperCase(),
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                   subtitle: Text('Nível ${pokemon.level}'),
@@ -89,7 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         context: context,
                         builder: (context) => AlertDialog(
                           title: const Text('Confirmar exclusão'),
-                          content: Text('Deseja realmente excluir ${pokemon.name}?'),
+                          content: Text('Deseja realmente excluir ${pokemon.name.toUpperCase()}?'),
                           actions: [
                             TextButton(
                               onPressed: () => Navigator.pop(context, false),
@@ -135,8 +135,8 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           );
         },
-        child: const Icon(Icons.add),
         backgroundColor: Colors.redAccent,
+        child: const Icon(Icons.add),
       ),
     );
   }

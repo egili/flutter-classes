@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'pokemon.dart';
 import 'pokemon_screen.dart';
 import 'new_pokemon_screen.dart'; 
+import 'trainer_profile_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -21,6 +22,39 @@ class _HomeScreenState extends State<HomeScreen> {
         title: const Text('Pokédex'),
         backgroundColor: Colors.redAccent,
         foregroundColor: Colors.white,
+        actions: [
+          FutureBuilder<DocumentSnapshot>(
+            future: FirebaseFirestore.instance.collection('config').doc('treinador').get(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData && snapshot.data!.exists) {
+                final data = snapshot.data!.data() as Map<String, dynamic>;
+                final index = data['avatarIndex'] as int? ?? 0;
+                return Padding(
+                  padding: const EdgeInsets.only(right: 4.0),
+                  child: CircleAvatar(
+                    backgroundColor: Colors.white24,
+                    child: Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Image.asset('assets/trainers/trainer_${index + 1}.png'),
+                    ),
+                  ),
+                );
+              }
+              return const SizedBox();
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.person),
+            onPressed: () async {
+              // Navega e aguarda o retorno para atualizar o avatar caso tenha mudado
+              await Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const TrainerProfileScreen()),
+              );
+              setState(() {}); // Força rebuild para atualizar o FutureBuilder
+            },
+          ),
+        ],
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: collection.snapshots(),

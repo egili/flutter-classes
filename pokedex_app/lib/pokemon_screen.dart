@@ -17,7 +17,7 @@ class PokemonScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      app_Bar: AppBar(title: Text(pokemon.name.toUpperCase())),
+      appBar: AppBar(title: Text(pokemon.name.toUpperCase())),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(

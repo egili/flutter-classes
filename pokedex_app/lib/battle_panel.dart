@@ -5,7 +5,7 @@ import 'stat_bar.dart';
 
 class BattlePanel extends StatefulWidget {
   final Pokemon pokemon;
-  final String docId; // Recebe o ID do documento do Firebase
+  final String docId; // Recebe o ID do documento do Firebase 
 
   const BattlePanel({super.key, required this.pokemon, required this.docId});
 

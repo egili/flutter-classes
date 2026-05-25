@@ -26,11 +26,14 @@ class _TrainerProfileScreenState extends State<TrainerProfileScreen> {
   }
 
   Future<void> _loadProfile() async {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if (uid == null) return;
+
     final doc = await FirebaseFirestore.instance
-        .collection('config')
-        .doc('treinador')
+        .collection('users')
+        .doc(uid)
         .get();
-        
+
     if (doc.exists) {
       final data = doc.data()!;
       setState(() {
@@ -43,11 +46,14 @@ class _TrainerProfileScreenState extends State<TrainerProfileScreen> {
   Future<void> _saveProfile() async {
     if (!_formKey.currentState!.validate()) return;
 
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if (uid == null) return;
+
     final nome = _nameController.text.trim();
 
     await FirebaseFirestore.instance
-        .collection('config')
-        .doc('treinador')
+        .collection('users')
+        .doc(uid)
         .set({
           'name': nome,
           'avatarIndex': _selectedAvatar,

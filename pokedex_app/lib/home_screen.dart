@@ -34,7 +34,10 @@ class _HomeScreenState extends State<HomeScreen> {
         foregroundColor: Colors.white,
         actions: [
           FutureBuilder<DocumentSnapshot>(
-            future: FirebaseFirestore.instance.collection('config').doc('treinador').get(),
+            future: FirebaseFirestore.instance
+                .collection('users')
+                .doc(FirebaseAuth.instance.currentUser?.uid)
+                .get(),
             builder: (context, snapshot) {
               if (snapshot.hasData && snapshot.data!.exists) {
                 final data = snapshot.data!.data() as Map<String, dynamic>;

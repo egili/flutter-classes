@@ -19,6 +19,7 @@ class MoveList extends StatelessWidget {
             ),
           ),
           ...moves.map(
+            
             (move) => ListTile(
               leading: Icon(move['icon']),
               title: Text(move['name']),

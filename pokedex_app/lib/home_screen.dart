@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'pokemon.dart';
 import 'pokemon_screen.dart';
-import 'new_pokemon_screen.dart'; 
+import 'new_pokemon_screen.dart';
 import 'trainer_profile_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -19,7 +20,16 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Pokédex'),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('Pokédex', style: TextStyle(fontSize: 18)),
+            Text(
+              FirebaseAuth.instance.currentUser?.email ?? '',
+              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.normal),
+            ),
+          ],
+        ),
         backgroundColor: Colors.redAccent,
         foregroundColor: Colors.white,
         actions: [
@@ -42,6 +52,10 @@ class _HomeScreenState extends State<HomeScreen> {
               }
               return const SizedBox();
             },
+          ),
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () => FirebaseAuth.instance.signOut(),
           ),
           IconButton(
             icon: const Icon(Icons.person),
